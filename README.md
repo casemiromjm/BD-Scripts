@@ -1,2 +1,2 @@
 # BD-Scripts
-Archives used in BD project
+Repository with .sql files used on our project
