@@ -6,30 +6,30 @@ PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS Person;
 CREATE TABLE Person (
-    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0) ON DELETE CASCADE,
+    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     personName TEXT NOT NULL,
     nif VARCHAR(9) NOT NULL UNIQUE,
 );
 
 DROP TABLE IF EXISTS Client;
 CREATE TABLE Client (
-    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0) ON UPDATE CASCADE,
+    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     email TEXT NOT NULL UNIQUE,
     phoneNumber TEXT NOT NULL,
     address TEXT NOT NULL,
     birthDate TEXT NOT NULL,
 
-    FOREIGN KEY (personID) REFERENCES Person(personID)
+    FOREIGN KEY (personID) REFERENCES Person(personID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Employee;
 CREATE TABLE Employee (
-    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0) ON UPDATE CASCADE,
+    personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     job TEXT NOT NULL,
     salary NUMERIC NOT NULL CHECK (salary > 0),
     hiringDate TEXT NOT NULL,
 
-    FOREIGN KEY (personID) REFERENCES Person(personID)
+    FOREIGN KEY (personID) REFERENCES Person(personID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Bakery;
@@ -46,7 +46,7 @@ CREATE TABLE Fidelity (
     pointsBalance INTEGER NOT NULL DEFAULT 0 CHECK (pointsBalance >= 0),
     startingDate TEXT NOT NULL,       -- starting date of the membership
     
-    FOREIGN KEY (personID) REFERENCES Client(personID),
+    FOREIGN KEY (personID) REFERENCES Client(personID) ON DELETE CASCADE ON UPDATE CASCADE,
 );
 
 DROP TABLE IF EXISTS Shift;
@@ -68,58 +68,62 @@ CREATE TABLE Product (
 DROP TABLE IF EXISTS Ingredient;
 CREATE TABLE Ingredient (
     ingredientID PRIMARY KEY NOT NULL UNIQUE CHECK (ingredientID > 0),
-    name
-    unit
-    expirationDate
-    stockQuantity
+    name TEXT NOT NULL,
+    unit TEXT NOT NULL,
+    expirationDate TEXT NOT NULL,
+    stockQuantity INTEGER NOT NULL CHECK (stockQuantity >= 0),
 );
 
 DROP TABLE IF EXISTS Supplier;
 CREATE TABLE Supplier (
-    supplierID
-    supplierName
-    contactNumber
+    supplierID PRIMARY KEY NOT NULL UNIQUE CHECK (supplierID > 0),
+    supplierName TEXT NOT NULL,
+    contactNumber TEXT NOT NULL,
     ingredient
 );
 
 DROP TABLE IF EXISTS Sale;
 CREATE TABLE Sale (
-    saleID PRIMARY KEY
-    description
-    discountPercentage
+    saleID PRIMARY KEY NOT NULL UNIQUE CHECK (saleID > 0),
+    description TEXT NOT NULL,
+    discountPercentage NUMERIC NOT NULL CHECK (discountPercentage >= 0),
     startingDate TEXT NOT NULL
     endingDate TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Delivery;
 CREATE TABLE Delivery (
-    deliveryID
-    deliveryAddress
-    deliveryDate
-    deliveryStatus
+    deliveryID PRIMARY KEY NOT NULL UNIQUE CHECK (deliveryID > 0),
+    deliveryAddress TEXT NOT NULL,
+    deliveryDate TEXT NOT NULL,
+    deliveryStatus TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Order;
 CREATE TABLE Order (
-    orderID
-    orderDate
-    totalValue
-    orderStatus
+    orderID PRIMARY KEY NOT NULL UNIQUE CHECK (orderID > 0),
+    orderDate TEXT NOT NULL,
+    totalValue NUMERIC NOT NULL CHECK (totalValue > 0),
+    orderStatus TEXT NOT NULL,
 );
 
 DROP TABLE IF EXISTS Rating;
 CREATE TABLE Rating (
-    ratingID
-    score
-    comment
-    orderID
+    ratingID PRIMARY KEY NOT NULL UNIQUE CHECK (ratingID > 0),
+    score INTEGER NOT NULL CHECK (score >= 0 AND score <= 5),
+    comment TEXT NOT NULL,
+    orderID INTEGER NOT NULL,
+
+    FOREIGN KEY (orderID) REFERENCES Order(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Payment;
 CREATE TABLE Payment (
-    paymentID
-    paymentMethod
-    paymentDate
-    paymentValue
-    orderID
+    paymentID PRIMARY KEY NOT NULL UNIQUE CHECK (paymentID > 0),
+    paymentMethod TEXT NOT NULL,
+    paymentDate TEXT NOT NULL,
+    paymentValue NUMERIC NOT NULL CHECK (paymentValue > 0),
+    orderID INTEGER NOT NULL,
+
+    FOREIGN KEY (orderID) REFERENCES Order(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
