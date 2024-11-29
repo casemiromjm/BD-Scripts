@@ -2,6 +2,10 @@
 Initial create file for creating the Bakery database
 */
 
+/* 
+the attributes dates are stored as TEXT because SQLite does not have a storage class set aside for storing dates and/or times and the date and time functions are capable of operating on TEXT, REAL, or INTEGER values. also, the format we had in mind for the dates is "YYYYMMDD" for the sake of simplicity.
+*/
+
 PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS Person;
