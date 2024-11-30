@@ -69,7 +69,7 @@ CREATE TABLE Product (
     productID PRIMARY KEY
     name TEXT NOT NULL,
     price NUMERIC NOT NULL CHECK (price > 0),
-    productType
+    productType TEXT NOT NULL,
 );
 
 DROP TABLE IF EXISTS Ingredient;
@@ -86,7 +86,9 @@ CREATE TABLE Supplier (
     supplierID PRIMARY KEY NOT NULL UNIQUE CHECK (supplierID > 0),
     supplierName TEXT NOT NULL,
     contactNumber TEXT NOT NULL,
-    ingredient
+    ingredientSupplied INTEGER NOT NULL,
+
+    FOREIGN KEY (ingredientSupplied) REFERENCES Ingredient(ingredientID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Sale;
