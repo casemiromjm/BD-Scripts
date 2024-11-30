@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS Person;
 CREATE TABLE Person (
     personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     personName TEXT NOT NULL,
-    nif VARCHAR(9) NOT NULL UNIQUE,
+    nif VARCHAR(9) NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS Client;
@@ -44,16 +44,16 @@ CREATE TABLE Bakery (
     bakeryID INTEGER PRIMARY KEY NOT NULL CHECK (bakeryID > 0),
     name TEXT NOT NULL,
     location TEXT NOT NULL,
-    phoneNumber TEXT NOT NULL,
+    phoneNumber TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Fidelity;
 CREATE TABLE Fidelity (
-    personID PRIMARY KEY NOT NULL UNIQUE CHECK (fidelityProgramID > 0),
+    personID PRIMARY KEY NOT NULL UNIQUE CHECK (personID > 0),
     pointsBalance INTEGER NOT NULL DEFAULT 0 CHECK (pointsBalance >= 0),
     startingDate TEXT NOT NULL,       -- starting date of the membership
     
-    FOREIGN KEY (personID) REFERENCES Client(personID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (personID) REFERENCES Client(personID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Shift;
@@ -61,15 +61,15 @@ CREATE TABLE Shift (
     shiftID PRIMARY KEY NOT NULL UNIQUE CHECK (shiftID > 0),
     startingTime TEXT NOT NULL CHECK (startingTime < endingTime),
     endingTime TEXT NOT NULL,
-    intervalBreak TEXT NOT NULL,
+    intervalBreak TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Product;
 CREATE TABLE Product (
-    productID PRIMARY KEY
+    productID PRIMARY KEY NOT NULL UNIQUE CHECK (productID > 0),
     name TEXT NOT NULL,
     price NUMERIC NOT NULL CHECK (price > 0),
-    productType TEXT NOT NULL,
+    productType TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Ingredient;
@@ -78,7 +78,7 @@ CREATE TABLE Ingredient (
     name TEXT NOT NULL,
     unit TEXT NOT NULL,
     expirationDate TEXT NOT NULL,
-    stockQuantity INTEGER NOT NULL CHECK (stockQuantity >= 0),
+    stockQuantity INTEGER NOT NULL CHECK (stockQuantity >= 0)
 );
 
 DROP TABLE IF EXISTS Supplier;
@@ -96,7 +96,7 @@ CREATE TABLE Sale (
     saleID PRIMARY KEY NOT NULL UNIQUE CHECK (saleID > 0),
     description TEXT NOT NULL,
     discountPercentage NUMERIC NOT NULL CHECK (discountPercentage >= 0),
-    startingDate TEXT NOT NULL
+    startingDate TEXT NOT NULL,
     endingDate TEXT NOT NULL
 );
 
@@ -108,12 +108,13 @@ CREATE TABLE Delivery (
     deliveryStatus TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS Order;
-CREATE TABLE Order (
+-- rename order table, because order is a reserved keyword in SQLite
+DROP TABLE IF EXISTS Order1;
+CREATE TABLE Order1 (
     orderID PRIMARY KEY NOT NULL UNIQUE CHECK (orderID > 0),
     orderDate TEXT NOT NULL,
     totalValue NUMERIC NOT NULL CHECK (totalValue > 0),
-    orderStatus TEXT NOT NULL,
+    orderStatus TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS Rating;
@@ -123,7 +124,7 @@ CREATE TABLE Rating (
     comment TEXT NOT NULL,
     orderID INTEGER NOT NULL,
 
-    FOREIGN KEY (orderID) REFERENCES Order(orderID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (orderID) REFERENCES Order1(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Payment;
@@ -134,5 +135,5 @@ CREATE TABLE Payment (
     paymentValue NUMERIC NOT NULL CHECK (paymentValue > 0),
     orderID INTEGER NOT NULL,
 
-    FOREIGN KEY (orderID) REFERENCES Order(orderID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (orderID) REFERENCES Order1(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
