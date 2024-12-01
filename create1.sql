@@ -35,8 +35,13 @@ CREATE TABLE Employee (
     job TEXT NOT NULL,
     salary NUMERIC NOT NULL CHECK (salary > 0),
     hiringDate TEXT NOT NULL,
+    bakeryID INTEGER,
+    isManager INTEGER NOT NULL CHECK (isManager IN (0, 1)),
+    shiftID INTEGER,
 
-    FOREIGN KEY (personID) REFERENCES Person(personID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (personID) REFERENCES Person(personID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (bakeryID) REFERENCES Bakery(bakeryID) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (shiftID) REFERENCES Shift(shiftID) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Bakery;
@@ -58,10 +63,13 @@ CREATE TABLE Fidelity (
 
 DROP TABLE IF EXISTS Shift;
 CREATE TABLE Shift (
-    shiftID PRIMARY KEY NOT NULL UNIQUE CHECK (shiftID > 0),
+    shiftID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (shiftID > 0),
     startingTime TEXT NOT NULL CHECK (startingTime < endingTime),
     endingTime TEXT NOT NULL,
-    intervalBreak TEXT NOT NULL
+    intervalBreak TEXT NOT NULL,
+    employeeID INTEGER,
+
+    FOREIGN KEY (employeeID) REFERENCES Employee(personID) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Product;
@@ -93,38 +101,46 @@ CREATE TABLE Supplier (
 
 DROP TABLE IF EXISTS Sale;
 CREATE TABLE Sale (
-    saleID PRIMARY KEY NOT NULL UNIQUE CHECK (saleID > 0),
+    saleID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (saleID > 0),
     description TEXT NOT NULL,
     discountPercentage NUMERIC NOT NULL CHECK (discountPercentage >= 0),
     startingDate TEXT NOT NULL,
-    endingDate TEXT NOT NULL
-);
+    endingDate TEXT NOT NULL,
+    productID INTEGER NOT NULL,
 
-DROP TABLE IF EXISTS Delivery;
-CREATE TABLE Delivery (
-    deliveryID PRIMARY KEY NOT NULL UNIQUE CHECK (deliveryID > 0),
-    deliveryAddress TEXT NOT NULL,
-    deliveryDate TEXT NOT NULL,
-    deliveryStatus TEXT NOT NULL
+    FOREIGN KEY (productID) REFERENCES Product(productID)
 );
 
 -- rename order table, because order is a reserved keyword in SQLite
-DROP TABLE IF EXISTS Order1;
-CREATE TABLE Order1 (
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE Orders (
     orderID PRIMARY KEY NOT NULL UNIQUE CHECK (orderID > 0),
     orderDate TEXT NOT NULL,
     totalValue NUMERIC NOT NULL CHECK (totalValue > 0),
     orderStatus TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS Rating;
-CREATE TABLE Rating (
-    ratingID PRIMARY KEY NOT NULL UNIQUE CHECK (ratingID > 0),
-    score INTEGER NOT NULL CHECK (score >= 0 AND score <= 5),
-    comment TEXT NOT NULL,
+DROP TABLE IF EXISTS Delivery;
+CREATE TABLE Delivery (
+    deliveryID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (deliveryID > 0),
+    deliveryAddress TEXT NOT NULL,
+    deliveryDate TEXT NOT NULL,
+    deliveryStatus TEXT NOT NULL,
     orderID INTEGER NOT NULL,
 
-    FOREIGN KEY (orderID) REFERENCES Order1(orderID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (orderID) REFERENCES Orders(orderID)
+);
+
+DROP TABLE IF EXISTS Rating;
+CREATE TABLE Rating (
+    ratingID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (ratingID > 0),
+    score INTEGER NOT NULL CHECK (score >= 0 AND score <= 5),
+    comment TEXT NOT NULL,
+    clientID INTEGER NOT NULL,
+    orderID INTEGER NOT NULL,
+
+    FOREIGN KEY (clientID) REFERENCES Client(personID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (orderID) REFERENCES Orders(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS Payment;
@@ -135,5 +151,5 @@ CREATE TABLE Payment (
     paymentValue NUMERIC NOT NULL CHECK (paymentValue > 0),
     orderID INTEGER NOT NULL,
 
-    FOREIGN KEY (orderID) REFERENCES Order1(orderID) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (orderID) REFERENCES Orders(orderID) ON DELETE CASCADE ON UPDATE CASCADE
 );
