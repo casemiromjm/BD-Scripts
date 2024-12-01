@@ -54,10 +54,10 @@ INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VA
 INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (10, 'Baker', 1100, '2023-01-15', 3);
 
 -- inserting data into Fidelity table
-INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (1, 87, '2021-04-01');
-INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (2, 103, '2021-04-01');
-INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (3, 9, '2021-04-01');
-INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (4, 120, '2022-01-16');
+INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (1, 0, '2021-04-01');
+INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (2, 0, '2021-04-01');
+INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (3, 0, '2021-04-01');
+INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (4, 0, '2022-01-16');
 INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (5, 0, '2022-05-09');
 
 -- inserting data into Shift table
