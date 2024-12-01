@@ -50,11 +50,11 @@ INSERT INTO Person (personID, personName, nif) VALUES (9, 'Inês Abreu', '765562
 INSERT INTO Person (personID, personName, nif) VALUES (10, 'Mafalda Almeida', '823908452');
 INSERT INTO Person (personID, personName, nif) VALUES (11, 'João Silva', '978654321'); -- Manager
 
-INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (6, 'Baker', 1200, '2021-02-01', 1);
-INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (7, 'Waiter', 930, '2021-02-01', 1);
-INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (8, 'Waiter', 860, '2021-06-01', 1);
-INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (9, 'Waiter', 860, '2021-06-01', 2);
-INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (10, 'Baker', 1100, '2023-01-15', 3);
+INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID) VALUES (6, 'Baker', 1200, '2021-02-01', 1);
+INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID) VALUES (7, 'Waiter', 930, '2021-02-01', 1);
+INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID) VALUES (8, 'Waiter', 860, '2021-06-01', 1);
+INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID) VALUES (9, 'Waiter', 860, '2021-06-01', 2);
+INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID) VALUES (10, 'Baker', 1100, '2023-01-15', 3);
 INSERT INTO Employee (personID, job, salary, hiringDate, bakeryID, isManager) VALUES (11, 'Manager', 1500, '2021-01-01', 1, 1); -- Manager for Bakery 1 (only one)
 
 -- inserting data into Fidelity table
@@ -64,12 +64,12 @@ INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (3, 9, '2021
 INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (4, 120, '2022-01-16');
 INSERT INTO Fidelity (personID, pointsBalance, startingDate) VALUES (5, 0, '2022-05-09');
 
--- inserting data into Shift table
+-- inserting data into Shift table (duplicates shifts for different employees)
 INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (1, '09:00', '14:00', '11:00', 6);
 INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (2, '13:00', '20:00', '16:00', 7);
 INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (3, '13:00', '20:00', '16:00', 8);
-INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (1, '09:00', '14:00', '11:00', 9);
-INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (2, '13:00', '20:00', '16:00', 10);
+INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (4, '09:00', '14:00', '11:00', 9);
+INSERT INTO Shift (shiftID, startingTime, endingTime, intervalBreak, employeeID) VALUES (5, '13:00', '20:00', '16:00', 10);
 
 -- inserting data into Ingredient table (change the quantity)
 INSERT INTO Ingredient (ingredientID, name, unit, expirationDate, stockQuantity) VALUES (1, 'Farinha', 'kg', '2025-11-30', 95);
@@ -89,6 +89,8 @@ INSERT INTO Product (productID, name, price, productType) VALUES (2, 'Bolo do Ca
 INSERT INTO Product (productID, name, price, productType) VALUES (3, 'Croissant Brioche', 1.2, 1);
 INSERT INTO Product (productID, name, price, productType) VALUES (4, 'Pastel de Nata', 0.5, 4);
 INSERT INTO Product (productID, name, price, productType) VALUES (5, 'Pão Tigre', 1.2, 1);
+INSERT INTO Product (productID, name, price, productType) VALUES (6, 'Bolo de Chocolate', 12, 1);
+INSERT INTO Product (productID, name, price, productType) VALUES (7, 'Pão Baguete', 1.5, 1);
 
 -- inserting data into Order table
 INSERT INTO Orders (orderID, orderDate, totalValue, orderStatus) VALUES (1, '2021-04-01', 10, 'Done');
@@ -112,11 +114,11 @@ INSERT INTO Supplier (supplierID, supplierName, contactNumber) VALUES (9, 'Porto
 INSERT INTO Supplier (supplierID, supplierName, contactNumber) VALUES (10, 'Ribeiro Distribuidora', '980614235');
 
 -- inserting data into Sale table
-INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate) Values (1,'Sale on Pão de Deus', 10, '2022-06-18','2022-07-15');
-INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate) Values (2,'Sale on Bolo do Caco', 5, '2023-09-11','2023-09-25');
-INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate) Values (3,'Sale on Croissant Brioche', 3, '2023-10-20','2023-10-28');
-INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate) Values (4,'Sale on Pastel de Nata', 1, '2024-01-12','2024-05-13');
-INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate) Values (5,'Sale on Pão Tigre', 15, '2024-09-20','2024-12-31');
+INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate, productID) Values (1,'Sale on Pão de Deus', 10, '2022-06-18','2022-07-15', 1);
+INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate, productID) Values (2,'Sale on Bolo do Caco', 5, '2023-09-11','2023-09-25', 2);
+INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate, productID) Values (3,'Sale on Croissant Brioche', 3, '2023-10-20','2023-10-28', 3);
+INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate, productID) Values (4,'Sale on Pastel de Nata', 1, '2024-01-12','2024-05-13', 4);
+INSERT INTO Sale (saleID, description, discountPercentage, startingDate, endingDate, productID) Values (5,'Sale on Pão Tigre', 15, '2024-09-20','2024-12-31', 5);
 
 -- inserting data into Delivery table
 INSERT INTO Delivery (deliveryID, deliveryAddress, deliveryDate, deliveryStatus, orderID) VALUES (1, 'Rua Manuel Pacheco Miranda, 205', '2021-04-01', 'Done', 1);
