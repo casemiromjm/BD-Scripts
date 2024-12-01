@@ -3,8 +3,23 @@
 */
 PRAGMA foreign_keys = ON;
 
-/* Person Table */
+-- clean up
+DROP TABLE IF EXISTS Rating;
+DROP TABLE IF EXISTS Payment;
+DROP TABLE IF EXISTS Delivery;
+DROP TABLE IF EXISTS Sale;
+DROP TABLE IF EXISTS Shift;
+DROP TABLE IF EXISTS Fidelity;
+DROP TABLE IF EXISTS Employee;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Client;
+DROP TABLE IF EXISTS Supplier;
+DROP TABLE IF EXISTS Product;
+DROP TABLE IF EXISTS Ingredient;
+DROP TABLE IF EXISTS Bakery;
 DROP TABLE IF EXISTS Person;
+
+/* Person Table */
 CREATE TABLE Person (
     personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     personName TEXT NOT NULL,
@@ -12,7 +27,6 @@ CREATE TABLE Person (
 );
 
 /* Client Table */
-DROP TABLE IF EXISTS Client;
 CREATE TABLE Client (
     personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     email TEXT NOT NULL UNIQUE,
@@ -24,7 +38,6 @@ CREATE TABLE Client (
 );
 
 /* Bakery Table */
-DROP TABLE IF EXISTS Bakery;
 CREATE TABLE Bakery (
     bakeryID INTEGER PRIMARY KEY NOT NULL CHECK (bakeryID > 0),
     name TEXT NOT NULL,
@@ -33,7 +46,6 @@ CREATE TABLE Bakery (
 );
 
 /* Order Table */
-DROP TABLE IF EXISTS Orders;
 CREATE TABLE Orders (
     orderID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (orderID > 0),
     orderDate TEXT NOT NULL,
@@ -42,7 +54,6 @@ CREATE TABLE Orders (
 );
 
 /* Employee Table */
-DROP TABLE IF EXISTS Employee;
 CREATE TABLE Employee (
     personID INTEGER PRIMARY KEY NOT NULL CHECK (personID > 0),
     job TEXT NOT NULL,
@@ -56,7 +67,6 @@ CREATE TABLE Employee (
 );
 
 /* Fidelity Table */
-DROP TABLE IF EXISTS Fidelity;
 CREATE TABLE Fidelity (
     personID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (personID > 0),
     pointsBalance INTEGER NOT NULL DEFAULT 0 CHECK (pointsBalance >= 0),
@@ -66,7 +76,6 @@ CREATE TABLE Fidelity (
 );
 
 /* Shift Table */
-DROP TABLE IF EXISTS Shift;
 CREATE TABLE Shift (
     shiftID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (shiftID > 0),
     startingTime TEXT NOT NULL CHECK (startingTime < endingTime),
@@ -78,7 +87,6 @@ CREATE TABLE Shift (
 );
 
 /* Product Table */
-DROP TABLE IF EXISTS Product;
 CREATE TABLE Product (
     productID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (productID > 0),
     name TEXT NOT NULL,
@@ -89,7 +97,6 @@ CREATE TABLE Product (
 );
 
 /* Ingredient Table */
-DROP TABLE IF EXISTS Ingredient;
 CREATE TABLE Ingredient (
     ingredientID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (ingredientID > 0),
     name TEXT NOT NULL,
@@ -99,7 +106,6 @@ CREATE TABLE Ingredient (
 );
 
 /* Supplier Table */
-DROP TABLE IF EXISTS Supplier;
 CREATE TABLE Supplier (
     supplierID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (supplierID > 0),
     supplierName TEXT NOT NULL,
@@ -107,7 +113,6 @@ CREATE TABLE Supplier (
 );
 
 /* Sale Table */
-DROP TABLE IF EXISTS Sale;
 CREATE TABLE Sale (
     saleID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (saleID > 0),
     description TEXT NOT NULL,
@@ -120,7 +125,6 @@ CREATE TABLE Sale (
 );
 
 /* Delivery Table */
-DROP TABLE IF EXISTS Delivery;
 CREATE TABLE Delivery (
     deliveryID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (deliveryID > 0),
     deliveryAddress TEXT NOT NULL,
@@ -132,7 +136,6 @@ CREATE TABLE Delivery (
 );
 
 /* Rating Table */
-DROP TABLE IF EXISTS Rating;
 CREATE TABLE Rating (
     ratingID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (ratingID > 0),
     score INTEGER NOT NULL CHECK (score >= 0 AND score <= 5),
@@ -145,7 +148,6 @@ CREATE TABLE Rating (
 );
 
 /* Payment Table */
-DROP TABLE IF EXISTS Payment;
 CREATE TABLE Payment (
     paymentID INTEGER PRIMARY KEY NOT NULL UNIQUE CHECK (paymentID > 0),
     paymentMethod TEXT NOT NULL,
